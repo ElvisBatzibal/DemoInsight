@@ -1,0 +1,10 @@
+{
+  "dependencies": {
+    "mssql1": {
+      "resourceId": "/subscriptions/[parameters('subscriptionId')]/resourcegroups/[parameters('resourceGroupName')]/providers/Microsoft.Sql/servers/demoazureinsightdbserver/databases/DemoAzureInsight",
+      "type": "mssql.azure",
+      "connectionId": "DemoAzureInsightDatabase",
+      "secretStore": "AzureAppSettings"
+    }
+  }
+}

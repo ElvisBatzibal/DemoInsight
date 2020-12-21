@@ -1,0 +1,36 @@
+﻿body {
+   
+    overflow-x: hidden;
+    height: 100%;
+    background-color: #CFD8DC;
+    background-repeat: no-repeat
+}
+
+.card {
+  /*  background-image: url("https://i.imgur.com/dpqZJV5.jpg");*/
+    background-image: url('https://image.freepik.com/free-photo/wall-wallpaper-concrete-colored-painted-textured-concept_53876-31799.jpg');
+    background-size: cover;
+    width: 650px;
+    height: 600px;
+    border-radius: 20px;
+    box-shadow: 0px 8px 16px 4px #9E9E9E;
+    margin-top: 50px;
+    margin-bottom: 50px;
+    color: #fff;
+}
+
+.time-font {
+    font-size: 50px
+}
+
+.sm-font {
+    font-size: 18px
+}
+
+.med-font {
+    font-size: 28px
+}
+
+.large-font {
+    font-size: 60px
+}

@@ -1,0 +1,252 @@
+﻿@{
+    ViewData["Title"] = "Home Page";
+
+    var ResultOfBank = (ServiceReferenceTipoCambio.VarDolar)ViewBag.ResultOfBank;
+    List<DemoInsight.Models.TipoCambio> ListExchangeRate = new List<TipoCambio>();
+     ListExchangeRate = (List<DemoInsight.Models.TipoCambio>)ViewBag.AllData;
+}
+
+
+<link href="~/css/Whater.css" rel="stylesheet" />
+
+
+<div class="text-center">
+    <h1 class="display-4">Welcome</h1>
+</div>
+
+<div class="container">
+    <div class="col-lg-12">
+        <h1 class="display-4">Whater</h1>
+        <p>API  Wheater</p>
+        <input type="text" name="Country" id="Country" value="" onkeyup="onKeyPressSearchCountry(event)" />
+        <button type="button" class="btn-info" onclick="onClikSearchCountry()">Search Country</button>
+        <div id="WhaterInfoPartial">
+            <div class="container-fluid px-1 px-md-6 py-6 mx-auto">
+                <div class="row d-flex justify-content-center px-6">
+                    <div class="card">
+
+                        <h2 id="CountryResultName" class="ml-auto mr-4 mt-3 mb-0"></h2>
+                        <p id="CountryResultWeather" class="ml-auto mr-4 mb-0 med-font">Snow</p>
+                        <h3 class="ml-auto mr-4 med-font">
+                            <img id="CountryResultIcon" height="120" width="120" src="http://openweathermap.org/img/wn/10d@2x.png" />
+                        </h3>
+
+                        <p id="CountryResultCloudAll" class="ml-auto mr-4 mb-0 med-font">Snow</p>
+                        <p id="CountryResultWind" class="ml-auto mr-4 mb-0 med-font">Snow</p>
+                        <p id="CountryResultTemp" class="ml-auto ml-4 mb-0">Snow</p>
+                        <p id="CountryResultTempMin" class="ml-auto ml-4 mb-0">Snow</p>
+                        <p id="CountryResultTempMax" class="ml-auto ml-4 mb-0">Snow</p>
+                        <p id="CountryResultPressure" class="ml-auto ml-4 mb-0">Snow</p>
+                        <p id="CountryResultHumidity" class="ml-auto ml-4 mb-0">Snow</p>
+                        <p id="CountryResultTime" class="time-font mb-0 ml-4 mt-auto">08:30</p>
+                        <p id="CountryResultDay" class="ml-4 mb-0">Wednesday, 18 October 2019</p>
+                        <p id="CountryResultCoord" class="ml-4 mb-0"></p>
+                        <p id="CountryResultSunrise" class="ml-4 mb-0"></p>
+                        <p id="CountryResultSunset" class="ml-4 mb-0"></p>
+
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+    </div>
+</div>
+<div class="container">
+    <div class="col-lg-12">
+        <h1 class="display-4">Exchange rate</h1>
+        <p> API  TipoCambio https://www.banguat.gob.gt/variables/ws/TipoCambio.asmx?op=TipoCambioDia </p>
+        <div class="container-fluid px-1 px-md-6 py-6 mx-auto">
+            <div class="row d-flex justify-content-center px-6">
+                <div class="card" style="width: 18rem;height:200px;">
+                    <div class="card-body">
+                        <h5 class="card-title">Referencia. @ResultOfBank.referencia</h5>
+                        <h5 class="card-text">Fecha. @ResultOfBank.fecha</h5>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="container">
+
+    <div class="col-md-12" style="padding-top:50px;">
+        <table class="table table-bordered table-hover table-sm">
+            <thead class="thead-dark">
+                <tr>
+                    <th scope="col">#</th>
+                    <th scope="col">Date System</th>
+                    <th scope="col">Date Exchange rate</th>
+                    <th scope="col">References Exchange rate</th>
+
+                </tr>
+            </thead>
+            <tbody>
+
+                @foreach (var item in ListExchangeRate)
+                {
+                    DateTime DateQuery = item.Fecha;
+
+                <tr>
+                    <th scope="row">
+                        @item.Id
+                </th>
+                <td>
+                    @item.FechaSys
+                </td>
+                <td>
+                    @DateQuery.ToShortDateString()
+                </td>
+
+                <td>
+                    @item.Referencia
+                </td>
+                </tr>
+                }
+
+
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<!-- jQuery -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+
+<link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
+<!-- Toastr -->
+<link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/css/toastr.min.css">
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js"></script>
+
+<script type="text/javascript">
+    function onKeyPressSearchCountry(event) {
+        let charcode = (event.which) ? event.which : window.event.keyCode;
+
+        if (charcode == 13 || charcode == 9) {
+            event.preventDefault();
+            var valueSearchCountr = $('#Country').val();
+            //value = (value.replace(/\./g, ''));
+            valueSearchCountr = valueSearchCountr.trim();
+            if (valueSearchCountr.length > 2) {
+                SearchCountry(valueSearchCountr)
+            }
+            else {
+                toastr.error('Enter more caracter', 'Notify')
+            }
+        }
+
+    }
+
+    function onClikSearchCountry() {
+        let valueSearchCountr = $('#Country').val();
+        //value = (value.replace(/\./g, ''));
+        valueSearchCountr = valueSearchCountr.trim();
+        if (valueSearchCountr.length > 2) {
+            SearchCountry(valueSearchCountr)
+        }
+        else {
+            toastr.error('Enter more caracter', 'Notify')
+        }
+
+
+    }
+
+
+    function SearchCountry(valueSearchCountr) {
+        toastr.info('Searching...')
+
+        let URLAPI = 'https://community-open-weather-map.p.rapidapi.com/weather?q=' + encodeURIComponent(valueSearchCountr) + '&lat=0&lon=0&callback=&id=2172797&lang=null&units=%22metric%22%20or%20%22imperial%22&mode=xml%2C%20html'
+
+        const settings = {
+            "async": true,
+            "crossDomain": true,
+            "url": URLAPI,
+            "method": "GET",
+            "headers": {
+                "x-rapidapi-key": "adeda668bfmsh4b5af7624b156b3p17ddf8jsn331b719632c3",
+                "x-rapidapi-host": "community-open-weather-map.p.rapidapi.com"
+            }
+        };
+
+        $.ajax(settings).done(function (response) {
+
+            if (response.hasOwnProperty('cod') && response.cod == 200) {
+                console.log(response);
+
+                toastr.success('OK', 'Success')
+                document.getElementById("CountryResultName").innerHTML = response.name;
+                document.getElementById("CountryResultCoord").innerHTML = 'Coord: lat. ' + response.coord.lat + ' lon. ' + response.coord.lon;
+                document.getElementById("CountryResultTemp").innerHTML = 'Temp:' + response.main.temp;
+                document.getElementById("CountryResultTempMin").innerHTML = 'TempMin: ' + response.main.temp_min
+                document.getElementById("CountryResultTempMax").innerHTML = 'TempMax:' + response.main.temp_max
+                document.getElementById("CountryResultPressure").innerHTML = 'Pressure: ' + response.main.pressure + ' hpa'
+                document.getElementById("CountryResultHumidity").innerHTML = 'Humidity: ' + response.main.humidity + ' %'
+
+                let unix_timestamp = response.dt
+
+                // Create a new JavaScript Date object based on the timestamp
+                // multiplied by 1000 so that the argument is in milliseconds, not seconds.
+                var date = new Date(unix_timestamp * 1000);
+                // Hours part from the timestamp
+                var hours = date.getHours();
+                // Minutes part from the timestamp
+                var minutes = "0" + date.getMinutes();
+                // Seconds part from the timestamp
+                var seconds = "0" + date.getSeconds();
+                // Will display time in 10:30:23 format
+                var formattedTime = hours + ':' + minutes.substr(-2) + ':' + seconds.substr(-2);
+
+                document.getElementById('CountryResultTime').innerHTML = formattedTime
+                document.getElementById('CountryResultDay').innerHTML = date
+
+                document.getElementById('CountryResultWind').innerHTML = 'Speed ' + response.wind.speed + ' m/s. Deg. ' + response.wind.deg
+
+                document.getElementById('CountryResultSunrise').innerHTML = 'Sunrise.  ' + new Date(response.sys.sunrise * 1000)
+                document.getElementById('CountryResultSunset').innerHTML = 'Sunset. ' + new Date(response.sys.sunset * 1000)
+
+                document.getElementById('CountryResultCloudAll').innerHTML = 'Cloud. ' + response.clouds.all + ' %'
+
+                document.getElementById('CountryResultWeather').innerHTML = response.weather[0].description
+
+                let reficon = 'http://openweathermap.org/img/wn/' + response.weather[0].icon + '.png'
+                $("#CountryResultIcon").attr("src", reficon).load(function () {
+
+                });
+
+
+            } else {
+                toastr.warning(response.message)
+            }
+
+        });
+
+
+    }
+
+    $(document).ready(function () {
+        toastr.options = {
+            'closeButton': true,
+            'debug': false,
+            'newestOnTop': false,
+            'progressBar': false,
+            'positionClass': 'toast-top-right',
+            'preventDuplicates': false,
+            'showDuration': '1000',
+            'hideDuration': '1000',
+            'timeOut': '5000',
+            'extendedTimeOut': '1000',
+            'showEasing': 'swing',
+            'hideEasing': 'linear',
+            'showMethod': 'fadeIn',
+            'hideMethod': 'fadeOut',
+        }
+        //Default Call
+        SearchCountry('');
+
+    });
+
+
+</script>
